@@ -1,0 +1,68 @@
+<html>
+    <head>
+        <title>3hr JS project</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <form>
+            <label for=" Experience">Experience</label>
+            <input type="text" id="Experience" name="Experience" required>
+            <label for="Description">Description</label>
+            <input type="text" id="Description" name="Description" required>
+            <label for="Category">Category</label>
+            <select id="Category" name="Category" required>
+                <option value="">Select category</option>
+                <option value="Horror">Horror</option>
+                <option value="Action">Action</option>
+                <option value="Thriller">Thriller</option>
+                <option value="Romance">Romance</option>
+                <option value="Adventure">Adventure</option>
+            </select>
+            <button type="button" id="input" onclick="addInput()">Submit</button>
+        </form>
+        <hr>
+    <div id="inputs"></div>
+
+    <script>
+        var counter = 0;
+  
+        function addInput() {
+          var Experience = document.getElementById("Experience").value;
+          var Description = document.getElementById("Description").value;
+          var Category = document.getElementById("Category").value;
+          var id = "input" + counter;
+  
+          var newInput = document.createElement("div");
+          newInput.setAttribute("id", id);
+          newInput.classList.add("input-row");
+          newInput.innerHTML = "<span>->&nbsp;" + Experience + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>" +
+                               "<span>" + Description + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>" +
+                               "<span>" + Category + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>" +
+                               "<button type=\"button\" onclick=\"editInput('" + id + "')\">Edit</button>" +
+                               "<button type=\"button\" onclick=\"deleteInput('" + id + "')\">Delete</button>";
+  
+          document.getElementById("inputs").appendChild(newInput);
+          counter++;
+        }
+  
+        function editInput(id) {
+          var input = document.getElementById(id);
+          var Experience = input.childNodes[1].textContent;
+          var Description = input.childNodes[3].textContent;
+          var Category = input.childNodes[5].textContent;
+  
+          document.getElementById("Experience").value = Experience;
+          document.getElementById("Description").value = Description;
+          document.getElementById("Category").value = Category;
+  
+          input.parentNode.removeChild(input);
+        }
+  
+        function deleteInput(id) {
+          var input = document.getElementById(id);
+          input.parentNode.removeChild(input);
+        }
+      </script>
+  </body>
+</html>

@@ -1,1 +1,9 @@
 console.log("Hello this is my first code line using node js")
+
+
+//server
+const http = require('http');
+const server = http.createServer((req, res) => {
+  res.end('Aman');
+});
+server.listen(4000)

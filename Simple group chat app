@@ -1,0 +1,75 @@
+const express = require('express');
+const bodyParser = require('body-parser');
+const fs=require('fs');
+
+const app = express();
+const port = 3000;
+
+// set up middleware
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+// global variable to store username
+let username = '';
+
+// define login route
+app.get('/login', (req, res) => {
+  res.send(`
+    <form method="post" action="/login">
+      <label>
+        Enter your username:
+        <input type="text" name="username">
+      </label>
+      <button type="submit">Log in</button>
+    </form>
+  `);
+});
+
+// handle login form submission
+app.post('/login', (req, res) => {
+  username = req.body.username;
+  console.log(`Logged in as ${username}`);
+  res.redirect('/');
+});
+
+// define home route
+app.get('/', (req, res) => {
+    fs.readFile('username.txt',(err,data)=>{
+        if(err){
+            console.log(err)
+            data='no chat exist'
+        }
+        res.send(`
+            ${data}<form method="post" action="/">
+            <label>
+                Enter your message:
+                <input type="text" name="message">
+            </label>
+            <input type="hidden" name="username" value="${username}">
+            <button type="submit">Send</button>
+            </form>
+        `);
+    })
+  
+});
+
+// handle form submission
+app.post('/', (req, res) => {
+  const message = req.body.message;
+  console.log(`${username}: ${message}`);
+
+  // save message to file
+  const fs = require('fs');
+  const filename = `username.txt`;
+  const fileContent = `${username}: ${message}\n`;
+  fs.appendFile(filename, fileContent, (err) => {
+    if (err) throw err;
+    console.log(`Message saved to ${filename}`);
+  });
+
+  res.redirect('/');
+});
+
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
+});
